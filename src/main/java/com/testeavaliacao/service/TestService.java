@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class TestService {
     static String webService = "http://localhost:4502/bin/sistema/product";
@@ -24,9 +25,14 @@ public class TestService {
                 throw new RuntimeException();
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            Scanner sc = new Scanner(connection.getInputStream());
+            String dados = null;
 
-            json = new Gson().fromJson(br, String.class);
+            while (sc.hasNextLine()) {
+                dados += sc.next();
+            }
+
+            json = new Gson().fromJson(dados, String.class);
             System.out.println(json);
         } catch (Exception e) {
             System.out.println(e.getMessage());
